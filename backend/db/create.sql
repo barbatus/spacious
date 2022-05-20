@@ -1,0 +1,2 @@
+CREATE DATABASE strapi;
+CREATE DATABASE strapi_prod;
