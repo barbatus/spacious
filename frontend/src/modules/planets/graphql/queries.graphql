@@ -1,0 +1,14 @@
+query GetPlanets($page: Int, $pageSize: Int) {
+  planets(page: $page, pageSize: $pageSize) {
+    pagination {
+      total
+    }
+    nodes {
+      id
+      name
+      pictureUrl
+      population
+    }
+  }
+}
+
