@@ -8,7 +8,7 @@ exports.up = function(knex) {
     table.string('planet').references('code').inTable('planets');
     table.string('name').checkLength('<=', 15).checkLength('>=', 1).notNullable();
     table.text('description').checkLength('<=', 300).checkLength('>=', 10);
-    table.string('picture_url');
+    table.text('picture_url');
     table.timestamps(true, true);
   });
 };
