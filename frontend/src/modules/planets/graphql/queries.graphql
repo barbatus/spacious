@@ -12,3 +12,26 @@ query GetPlanets($page: Int, $pageSize: Int) {
   }
 }
 
+query GetPlanet($planetId: Int!) {
+  planet(id: $planetId) {
+    id
+    name
+    description
+    population
+    characters(limit: 3) {
+      id
+      name
+      pictureUrl
+      friendsCount
+    }
+  }
+}
+
+mutation CreatePlanet($input: PlanetInput!) {
+  createPlanet(planet: $input) {
+    id
+    name
+    pictureUrl
+    population
+  }
+}
