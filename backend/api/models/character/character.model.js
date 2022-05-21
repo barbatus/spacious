@@ -9,8 +9,8 @@ export class Character extends Model {
     return new Character().builder;
   }
 
-  static findByPlanet(planet) {
-    return planet ? this.where('planet', planet) : this.select();
+  static findByPlanet(planetCode) {
+    return planetCode ? this.where('planet', planetCode) : this.select();
   }
 
   static findFriends(id) {

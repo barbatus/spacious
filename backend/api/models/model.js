@@ -20,4 +20,8 @@ export class Model {
   static join(...args) {
     return this.query().join(...args);
   }
+
+  static insert(...args) {
+    return this.query().insert(...args);
+  }
 }

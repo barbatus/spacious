@@ -1,4 +1,4 @@
-import { Planet } from "./planet.model";
+import { Planet } from './planet.model';
 
 export const queries = [`
   planet(id: Int!): Planet
