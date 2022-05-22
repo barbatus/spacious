@@ -42,6 +42,16 @@ export const useAddCharacter = () => {
           }
         },
       });
+      cache.modify({
+        fields: {
+          characters({ nodes, pagination }, { toReference }) {
+            return {
+              pagination,
+              nodes: [toReference(createCharacter), ...nodes],
+            };
+          }
+        },
+      });
     },
   });
 

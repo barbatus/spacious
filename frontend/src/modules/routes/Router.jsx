@@ -5,7 +5,6 @@ import {
   useLocation,
   Navigate,
 } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
 
 import { Planets, Planet, CreatePlanet } from '../planets';
 import { Characters, Character, CreateCharacter } from '../characters';
@@ -26,7 +25,10 @@ export const Router = () => {
           </Route>
         </Route>
         <Route path="characters" element={<Characters />}>
-          <Route path=":characterId" exact element={<Character />} />
+          <Route path="create" exact element={<CreateCharacter />} />
+          <Route path=":characterId" exact element={<Character />}>
+            <Route path="create" exact element={<CreateCharacter />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

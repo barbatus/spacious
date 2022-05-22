@@ -3,7 +3,7 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 
-import { Formik, FormRow, Input, useFormCallback } from '~/components/form';
+import { Formik, FormRow, Input, useFormCallback, Form } from '~/components/form';
 import { Modal } from '~/components/modal';
 
 import { useAddCharacter } from './graphql/hooks';
@@ -21,19 +21,19 @@ const validationSchema = Yup.object().shape({
     .nullable(),
 });
 
-const Form = React.memo(({errors, values, submitted, showCode, handleChange}) => {
+const CreateForm = React.memo(({errors, values, submitted, formError, showCode, handleChange}) => {
   return (
-    <React.Fragment>
+    <Form error={formError}>
       <FormRow label="Name" error={submitted && errors.name}>
         <Input name="name" value={values.name} onChange={handleChange} />
       </FormRow>
       { showCode && (
           <FormRow
-            label="Code"
+            label="Planet"
             hint="The planet the character lives on"
-            error={submitted && errors.code}
+            error={submitted && errors.planet}
           >
-            <Input name="code" value={values.code} onChange={handleChange} />
+            <Input name="planet" value={values.planet} onChange={handleChange} />
           </FormRow>
         )
       }
@@ -47,9 +47,17 @@ const Form = React.memo(({errors, values, submitted, showCode, handleChange}) =>
       <FormRow label="Description" error={submitted && errors.description}>
         <Input name="description" value={values.description} onChange={handleChange} />
       </FormRow>
-    </React.Fragment>
+    </Form>
   );
 });
+
+const parseError = ({ graphQLErrors = [] }) => {
+  const error = graphQLErrors[0];
+  if (error && error.extensions && error.extensions.code === 'INTERNAL_SERVER_ERROR') {
+    return 'Unable to complete the operation due to an error on the server';
+  }
+  return 'Some error has occured';
+}
 
 export const CreateCharacter= () => {
   const navigate = useNavigate();
@@ -57,11 +65,16 @@ export const CreateCharacter= () => {
   const { addCharacter } = useAddCharacter();
   const submitForm = useFormCallback();
   const context = useOutletContext();
+  const [error, setError] = React.useState();
 
   const planetCode = context && context.planet;
-  const onSubmit = React.useCallback((values) => {
-    addCharacter({ planet: planetCode, ...values });
-    onDismiss();
+  const onSubmit = React.useCallback(async (values) => {
+    try {
+      await addCharacter({ planet: planetCode, ...values });
+      onDismiss();
+    } catch (apolloError) {
+      setError(parseError(apolloError));
+    }
   }, [planetCode, addCharacter, onDismiss]);
 
   return (
@@ -75,7 +88,7 @@ export const CreateCharacter= () => {
         validationSchema={validationSchema}
         enableReinitialize
         submitForm={submitForm}
-        render={props => <Form {...props} />}
+        render={props => <CreateForm {...props} showCode={!planetCode} formError={error} />}
         onSubmit={onSubmit}
         validateOnBlur
       />

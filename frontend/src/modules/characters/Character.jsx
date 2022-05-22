@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import { Sidebar } from '~/components/sidebar/Sidebar';
 
@@ -23,14 +23,18 @@ const StyledTable = styled.table`
 const Info = (props) => {
   return (
     <StyledTable>
-      <tr>
-        <th>Planet</th>
-        <th>Friends</th>
-      </tr>
-      <tr>
-        <td>{props.planet}</td>
-        <td>{props.friends}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>Planet</th>
+          <th>Friends</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{props.planet}</td>
+          <td>{props.friends}</td>
+        </tr>
+      </tbody>
     </StyledTable>
   );
 };
@@ -51,15 +55,18 @@ export const Character = React.memo(() => {
   }));
 
   return (
-    <Sidebar 
-      { ...character }
-      Info={<Info planet={character.planet.name}
-      friends={character.friendsCount} />}
-      listName="Friends"
-      listData={friends}
-      emptyMsg={`${character.name} has no friends`}
-      onClose={onClose}
-    >
-    </Sidebar>
+    <React.Fragment>
+      <Sidebar 
+        { ...character }
+        Info={<Info planet={character.planet.name}
+        friends={character.friendsCount} />}
+        listName="Friends"
+        listData={friends}
+        emptyMsg={`${character.name} has no friends`}
+        onClose={onClose}
+      >
+      </Sidebar>
+      <Outlet />
+    </React.Fragment>
   );
 });
