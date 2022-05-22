@@ -6,7 +6,7 @@ const StyledImg = styled.img`
 `;
 
 export const PlanetSvg = ({ id = 1 }) => {
-  const imgId = parseInt(id, 10) % 10;
+  const imgId = Math.max(parseInt(id, 10) % 10, 1);
   const [svg, setSvg] = React.useState(null);
 
   React.useEffect(() => {

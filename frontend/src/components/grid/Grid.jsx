@@ -10,5 +10,5 @@ export const Grid = styled.div`
   grid-template-rows: max-content;
   grid-column: 1;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;

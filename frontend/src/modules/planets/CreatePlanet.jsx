@@ -28,9 +28,18 @@ const Form = React.memo(({errors, values, submitted, handleChange}) => {
         <Input name="name" value={values.name} onChange={handleChange} />
       </FormRow>
       <FormRow label="Code" error={submitted && errors.code}>
-        <Input name="code" value={values.code} onChange={handleChange} />
+        <Input
+          name="code"
+          placeholder="e.g. PI-NOE-01"
+          value={values.code}
+          onChange={handleChange}
+        />
       </FormRow>
-      <FormRow label="Image" error={submitted && errors.pictureUrl}>
+      <FormRow
+        label="Image"
+        hint="Paste the URL of a JPG or PNG of max 20kb"
+        error={submitted && errors.pictureUrl}
+      >
         <Input name="pictureUrl" value={values.pictureUrl} onChange={handleChange} />
       </FormRow>
       <FormRow label="Description" error={submitted && errors.description}>

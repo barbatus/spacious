@@ -38,10 +38,6 @@ export const useAddPlanet = () => {
         fields: {
           planets({ nodes, pagination }, { toReference }) {
             return {
-              pagination: {
-                ...pagination,
-                total: pagination.total + 1,
-              },
               nodes: [toReference(createPlanet), ...nodes],
             };
           }

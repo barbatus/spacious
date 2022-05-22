@@ -53,14 +53,14 @@ const Details = styled.div`
   padding-top: 0;
 `;
 
-const TileImg = React.memo(({ fallback, pictureUrl, ...props }) => {
-  const [failed, setFailed] = React.useState(!pictureUrl);
+const TileImg = React.memo(({ fallback, src, ...props }) => {
+  const [failed, setFailed] = React.useState(!src);
 
   const onFail = React.useCallback(() => setFailed(true), []);
 
   if (failed && fallback) return fallback;
 
-  return <StyledImg src={pictureUrl} {...props} onError={onFail} />;
+  return <StyledImg src={src} {...props} onError={onFail} />;
 });
 
 export const Tile = React.memo(({ to, name, pictureUrl, hint, className, imgFallback }) => {
