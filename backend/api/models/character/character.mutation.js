@@ -1,4 +1,7 @@
+import { Planet } from '../planet/planet.model';
 import { Character } from './character.model';
+
+import { ApolloError } from 'apollo-server-errors';
 
 export const mutations = [`
   createCharacter(character: CharacterInput!): Character
@@ -15,6 +18,10 @@ export const types = [`
 
 export const resolvers = {
   createCharacter: async (root, { character }) => {
+    const planet = await Planet.findByCode(character.planet);
+    if (!planet) {
+      throw new ApolloError(`There is no Planet with code ${character.planet}`, 'CUSTOM_ERROR');
+    }
     const res = await Character.insert({
       name: character.name,
       planet: character.planet,
