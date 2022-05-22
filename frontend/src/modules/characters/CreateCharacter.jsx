@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { Formik, FormRow, Input, useFormCallback, Form } from '~/components/form';
 import { Modal } from '~/components/modal';
 
+import { parseError } from '~/lib/graphql';
+
 import { useAddCharacter } from './graphql/hooks';
 
 const validationSchema = Yup.object().shape({
@@ -21,9 +23,9 @@ const validationSchema = Yup.object().shape({
     .nullable(),
 });
 
-const CreateForm = React.memo(({errors, values, submitted, formError, showCode, handleChange}) => {
+const CreateForm = React.memo(({errors, values, submitted, submitError, showCode, handleChange}) => {
   return (
-    <Form error={formError}>
+    <Form error={submitError}>
       <FormRow label="Name" error={submitted && errors.name}>
         <Input name="name" value={values.name} onChange={handleChange} />
       </FormRow>
@@ -51,21 +53,13 @@ const CreateForm = React.memo(({errors, values, submitted, formError, showCode, 
   );
 });
 
-const parseError = ({ graphQLErrors = [] }) => {
-  const error = graphQLErrors[0];
-  if (error && error.extensions && error.extensions.code === 'INTERNAL_SERVER_ERROR') {
-    return 'Unable to complete the operation due to an error on the server';
-  }
-  return 'Some error has occured';
-}
-
 export const CreateCharacter= () => {
   const navigate = useNavigate();
   const onDismiss = React.useCallback(() => navigate(-1), [navigate]);
   const { addCharacter } = useAddCharacter();
   const submitForm = useFormCallback();
   const context = useOutletContext();
-  const [error, setError] = React.useState();
+  const [submitError, setError] = React.useState();
 
   const planetCode = context && context.planet;
   const onSubmit = React.useCallback(async (values) => {
@@ -88,7 +82,7 @@ export const CreateCharacter= () => {
         validationSchema={validationSchema}
         enableReinitialize
         submitForm={submitForm}
-        render={props => <CreateForm {...props} showCode={!planetCode} formError={error} />}
+        render={props => <CreateForm {...props} showCode={!planetCode} submitError={submitError} />}
         onSubmit={onSubmit}
         validateOnBlur
       />

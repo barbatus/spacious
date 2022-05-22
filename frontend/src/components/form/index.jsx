@@ -11,7 +11,7 @@ const Row = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-conent: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: ${({withHint}) => withHint ? '16px' : '24px' };
 `;
 
 const Label = styled.label`
@@ -43,9 +43,14 @@ export const Input = styled(({ value = '', ...props}) => <input value={value} {.
   }
 `;
 
+const FormError = styled(ErrorMsg)`
+  margin-top: -8px;
+  margin-bottom: 24px;
+`;
+
 export const FormRow = React.memo(({ label, hint, error, children }) => {
   return (
-    <Row>
+    <Row withHint={Boolean(hint || error)}>
       <Label>{label}</Label>
       {children}
       {hint && !error && <Hint>{hint}</Hint>}
@@ -58,7 +63,7 @@ export const Form =  React.memo(({ error, children }) => {
   return (
     <form>
       {children}
-      <ErrorMsg>{error}</ErrorMsg>
+      {error && <FormError>{error}</FormError>}
     </form>
   );
 });

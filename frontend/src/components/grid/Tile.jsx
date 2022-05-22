@@ -63,14 +63,16 @@ const TileImg = React.memo(({ fallback, src, ...props }) => {
   return <StyledImg src={src} {...props} onError={onFail} />;
 });
 
-export const Tile = React.memo(({ to, name, pictureUrl, hint, className, imgFallback }) => {
-  return (
-    <Container className={className} to={to}>
-      <TileImg src={pictureUrl} fallback={imgFallback} />
-      <Details>
-        <TileName>{name}</TileName>
-        <Hint>{hint}</Hint>
-      </Details>
-    </Container>
-  );
-});
+export const Tile = React.memo(
+  React.forwardRef(({ to, name, pictureUrl, hint, className, imgFallback }, ref) => {
+    return (
+      <Container ref={ref} className={className} to={to}>
+        <TileImg src={pictureUrl} fallback={imgFallback} />
+        <Details>
+          <TileName>{name}</TileName>
+          <Hint>{hint}</Hint>
+        </Details>
+      </Container>
+    );
+  })
+);

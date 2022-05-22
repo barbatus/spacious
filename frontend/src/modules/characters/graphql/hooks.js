@@ -1,8 +1,10 @@
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { GetCharacters, GetCharacter, CreateCharacter } from './queries.graphql';
 
 export const useCharacters = (page = 1) => {
+  const [loaded, setLoaded] = React.useState(false);
   const { data, loading, error } = useQuery(GetCharacters, {
     variables: {
       page,
@@ -10,9 +12,14 @@ export const useCharacters = (page = 1) => {
     },
   });
 
+  if (!loading && !error && !loaded) {
+    setTimeout(() => setLoaded(true));
+  };
+
   return {
     characters: data ? data.characters.nodes : [], 
     loading,
+    loaded,
     error,
   };
 };

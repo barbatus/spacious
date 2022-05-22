@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 
-import { Formik, FormRow, Input, useFormCallback } from '~/components/form';
+import { Formik, FormRow, Input, Form, useFormCallback } from '~/components/form';
 import { Modal } from '~/components/modal';
+import { parseError } from '~/lib/graphql';
 
 import { useAddPlanet } from './graphql/hooks';
 
@@ -21,9 +22,9 @@ const validationSchema = Yup.object().shape({
     .nullable(),
 });
 
-const Form = React.memo(({errors, values, submitted, handleChange}) => {
+const CreateForm = React.memo(({errors, values, submitted, submitError, handleChange}) => {
   return (
-    <React.Fragment>
+    <Form error={submitError}>
       <FormRow label="Name" error={submitted && errors.name}>
         <Input name="name" value={values.name} onChange={handleChange} />
       </FormRow>
@@ -45,7 +46,7 @@ const Form = React.memo(({errors, values, submitted, handleChange}) => {
       <FormRow label="Description" error={submitted && errors.description}>
         <Input name="description" value={values.description} onChange={handleChange} />
       </FormRow>
-    </React.Fragment>
+    </Form>
   );
 });
 
@@ -54,24 +55,29 @@ export const CreatePlanet = () => {
   const onDismiss = React.useCallback(() => navigate(-1), [navigate]);
   const { addPlanet } = useAddPlanet();
   const submitForm = useFormCallback();
+  const [submitError, setError] = React.useState();
 
-  const onSubmit = React.useCallback((values) => {
-    addPlanet(values);
-    onDismiss();
+  const onSubmit = React.useCallback(async (values) => {
+    try {
+      await addPlanet(values);
+      onDismiss();
+    } catch(apolloError) {
+      setError(parseError(apolloError));
+    }
   }, [addPlanet, onDismiss]);
 
   return (
     <Modal
+      buttonMsgs={['Cancel', 'Create Planet']}
       onSubmit={submitForm}
       onDismiss={onDismiss}
-      buttonMsgs={['Cancel', 'Create Planet']}
     >
       <Formik
         initialValues={{}}
         validationSchema={validationSchema}
         enableReinitialize
         submitForm={submitForm}
-        render={props => <Form {...props} />}
+        render={props => <CreateForm {...props} submitError={submitError} />}
         onSubmit={onSubmit}
         validateOnBlur
       />
