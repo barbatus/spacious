@@ -13,17 +13,14 @@ export const resolvers = {
   async planets(_, { page = 1, pageSize = 10 }) {
     page = Math.max(page, 1);
     pageSize = Math.min(pageSize, 100);
-    const result = await Planet
-      .select()
-      .offset(pageSize*(page - 1))
-      .limit(pageSize);
+    const [count, planets] = await Promise.all([Planet.fastTotal(), Planet.selectPage(page, pageSize)]);
     return {
       pagination: {
-        total: result.length,
+        total: count,
         page,
         pageSize,
       },
-      nodes: result,
+      nodes: planets,
     };
   }
 };

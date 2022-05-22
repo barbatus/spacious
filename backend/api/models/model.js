@@ -3,6 +3,13 @@ import dbClient from '../../db/client';
 export class Model {
   constructor(tableName) {
     this.builder = dbClient(tableName);
+    this.builder.table = tableName;
+  }
+
+  static async fastTotal() {
+    const query = this.query();
+    const res = await this.exec(`SELECT reltuples AS estimate FROM pg_class where relname = '${query.table}'`);
+    return res.rows[0].estimate;
   }
 
   static findById(id) {
@@ -23,5 +30,9 @@ export class Model {
 
   static insert(...args) {
     return this.query().insert(...args);
+  }
+
+  static exec(...args) {
+    return dbClient.raw(...args);
   }
 }

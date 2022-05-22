@@ -14,17 +14,15 @@ export const resolvers = {
   async characters(_, { page = 1, pageSize = 10, planet }) {
     page = Math.max(page, 1);
     pageSize = Math.min(pageSize, 100);
-    const result = await Character
-      .findByPlanet(planet)
-      .offset(pageSize*(page - 1))
-      .limit(pageSize);
+    const [count, characters] =
+      await Promise.all([Character.fastTotal(), Character.selectPage(planet, page, pageSize)]);
     return {
       pagination: {
-        total: result.length,
+        total: count,
         page,
         pageSize,
       },
-      nodes: result,
+      nodes: characters,
     };
   },
 };

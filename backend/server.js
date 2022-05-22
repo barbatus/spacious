@@ -1,6 +1,6 @@
-import express from 'express';
+import Koa from 'koa';
 
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-koa';
 
 import { createServer } from 'http';
 
@@ -8,20 +8,25 @@ import { typeDefs, resolvers } from './api/schema';
 
 const PORT = process.env.PORT || 8000;
 
-const app = express();
+async function startApolloServer() {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    playground: {
+      endpoint: 'http://localhost:8000/graphql',
+    },
+  });
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  playground: {
-    endpoint: 'http://localhost:8000/graphql',
-  },
-});
+  await server.start();
 
-server.start().then(() => {
+  const app = new Koa();
   server.applyMiddleware({ app });
-});
+  
+  const httpServer = createServer(app);
 
-const httpServer = createServer(app);
+  httpServer.on('request', app.callback());
 
-httpServer.listen(PORT);
+  await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
+}
+
+startApolloServer();

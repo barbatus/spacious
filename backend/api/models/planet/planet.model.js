@@ -1,3 +1,4 @@
+import knex from 'knex';
 import { Model } from '../model';
 
 export class Planet extends Model {
@@ -9,8 +10,19 @@ export class Planet extends Model {
     return new Planet().builder;
   }
 
+  static selectPage(page, pageSize) {
+    return this
+      .select('planets.*')
+      .leftJoin('characters', 'planets.code', '=', 'characters.planet')
+      .count('characters.id as population')
+      .groupBy('planets.id')
+      .offset(pageSize*(page - 1))
+      .limit(pageSize);
+  }
+
   static findCharacters(planet) {
-    return this.join('characters', 'planets.code', '=', 'characters.planet')
+    return this
+      .join('characters', 'planets.code', '=', 'characters.planet')
       .where('planets.code', planet)
       .select('characters.*');
   }

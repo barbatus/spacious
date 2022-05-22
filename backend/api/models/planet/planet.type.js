@@ -1,3 +1,4 @@
+import { Planet } from './planet.model';
 import { Character } from '../character/character.model';
 
 export const types = [`
@@ -27,10 +28,11 @@ export const types = [`
 export const resolvers = {
   Planet: {
     population: async (root) => {
-      const res = await Character.findByPlanet(root.code).count('id').first();
-      return parseInt(res.count, 10);
+      if (root.population) return root.population;
+      const res = await Planet.findCharacters(root.code);
+      return res.length;
     },
     pictureUrl: (root) => root.picture_url,
-    characters: (root, { limit }) => Character.findByPlanet(root.code).limit(limit),
+    characters: (root, { limit }) => Planet.findCharacters(root.code).limit(limit),
   }
 };
