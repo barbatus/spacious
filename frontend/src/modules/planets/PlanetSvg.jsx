@@ -13,8 +13,6 @@ export const PlanetSvg = ({ id = 1 }) => {
     import(`./assets/planet-${imgId}.svg`).then(({ default: src }) => setSvg(src));
   }, [imgId]);
 
-  if (!svg) return null;
-
   return (
     <StyledImg alt="Planet" src={svg}></StyledImg>
   );

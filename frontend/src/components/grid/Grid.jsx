@@ -1,9 +1,8 @@
 import styled from 'styled-components/macro';
 
-export const Grid = styled.div`
-  ${'' /* display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; */}
+import { TransitionGroup } from 'react-transition-group';
+
+export const Grid = styled(TransitionGroup)`
   display: grid;
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fit, 276px);

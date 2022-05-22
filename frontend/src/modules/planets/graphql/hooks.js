@@ -1,8 +1,10 @@
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { GetPlanets, GetPlanet, CreatePlanet } from './queries.graphql';
 
 export const usePlanets = (page = 1) => {
+  const [loaded, setLoaded] = React.useState(false);
   const { data, loading, error } = useQuery(GetPlanets, {
     variables: {
       page,
@@ -10,10 +12,15 @@ export const usePlanets = (page = 1) => {
     },
   });
 
+  if (!loading && !error && !loaded) {
+    setTimeout(() => setLoaded(true));
+  };
+
   return {
     planets: data ? data.planets.nodes : [], 
     loading,
     error,
+    loaded,
   };
 };
 
@@ -38,6 +45,7 @@ export const useAddPlanet = () => {
         fields: {
           planets({ nodes, pagination }, { toReference }) {
             return {
+              pagination,
               nodes: [toReference(createPlanet), ...nodes],
             };
           }

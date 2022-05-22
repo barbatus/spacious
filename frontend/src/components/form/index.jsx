@@ -54,4 +54,13 @@ export const FormRow = React.memo(({ label, hint, error, children }) => {
   );
 });
 
+export const Form =  React.memo(({ error, children }) => {
+  return (
+    <form>
+      {children}
+      <ErrorMsg>{error}</ErrorMsg>
+    </form>
+  );
+});
+
 export default Label;
