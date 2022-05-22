@@ -1,14 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components/macro';
 
-import { Dialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
 import * as Yup from 'yup';
 
 import { Formik, FormRow, Input, useFormCallback } from '~/components/form';
-import { Icon } from '~/components/icons/Icon';
-import { Button } from '~/components/buttons';
+import { Modal } from '~/components/modal';
 
 import { useAddPlanet } from './graphql/hooks';
 
@@ -24,25 +20,6 @@ const validationSchema = Yup.object().shape({
     .max(300, 'Max length is 300')
     .nullable(),
 });
-
-const StyledModal = styled(Dialog)`
-  padding: 48px;
-  border-radius: 32px;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const ActionIcon = styled(Icon)`
-  cursor: pointer;
-`;
 
 const Form = React.memo(({errors, values, submitted, handleChange}) => {
   return (
@@ -69,35 +46,26 @@ export const CreatePlanet = () => {
   const { addPlanet } = useAddPlanet();
   const submitForm = useFormCallback();
 
-  const handleSubmit = React.useCallback((values) => {
+  const onSubmit = React.useCallback((values) => {
     addPlanet(values);
     onDismiss();
   }, [addPlanet, onDismiss]);
 
   return (
-    <StyledModal
-      aria-labelledby="create planet"
+    <Modal
+      onSubmit={submitForm}
       onDismiss={onDismiss}
+      buttonMsgs={['Cancel', 'Create Planet']}
     >
-      <div>
-        <Header>
-          <ActionIcon name="close" onClick={onDismiss} />
-        </Header>
-        <h1>Planet</h1>
-        <Formik
-          initialValues={{}}
-          validationSchema={validationSchema}
-          enableReinitialize
-          submitForm={submitForm}
-          render={props => <Form {...props} />}
-          onSubmit={handleSubmit}
-          validateOnBlur
-        />
-        <Footer>
-          <Button onClick={onDismiss}>Cancel</Button>
-          <Button primary onClick={submitForm}>Create Planet</Button>
-        </Footer>
-      </div>
-    </StyledModal>
+      <Formik
+        initialValues={{}}
+        validationSchema={validationSchema}
+        enableReinitialize
+        submitForm={submitForm}
+        render={props => <Form {...props} />}
+        onSubmit={onSubmit}
+        validateOnBlur
+      />
+    </Modal>
   );
 };
