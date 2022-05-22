@@ -12,3 +12,21 @@ query GetCharacters($page: Int, $pageSize: Int) {
   }
 }
 
+query GetCharacter($characterId: Int!) {
+  character(id: $characterId) {
+    id
+    name
+    description
+    friendsCount
+    planet {
+      id
+      name
+    }
+    friends(limit: 10) {
+      id
+      name
+      description
+      pictureUrl
+    }
+  }
+}
