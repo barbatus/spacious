@@ -4,11 +4,11 @@ import styled from 'styled-components/macro';
 
 import ClipLoader from 'react-spinners/ClipLoader';
 
+import { Circle } from '~/components/buttons';
 import { Grid, Tile } from '~/components/grid';
 
 import { usePlanets } from './graphql/hooks';
-
-// import { ReactComponent as Test } from  './assets/planet-1.svg';
+import { PlanetSvg } from './PlanetSvg';
 
 const SidebarContainer = styled.div`
   grid-row: 1 / span 2;
@@ -18,6 +18,11 @@ const SidebarContainer = styled.div`
 const GridContainer  = styled.div`
   position: relative;
 `
+
+const AddButton = styled(Circle)`
+  right: 32px;
+  bottom: 0;
+`;
 
 const Loader = styled.div`
   position: absolute;
@@ -35,14 +40,18 @@ export const Planets = React.memo(() => {
       {...planet}
       key={planet.id}
       hint={`Pop. ${planet.population}`}
+      imgFallback={<PlanetSvg id={planet.id} />}
       to={`/planets/${planet.id}`}
     />
   ));
+
+  const onAddPlanet = React.useCallback(() => navigate('./create'), [navigate]);
 
   return (
     <React.Fragment>
       <GridContainer>
         <Grid>{items}</Grid>
+        <AddButton onClick={onAddPlanet} />
         <Loader>
           {loading && <ClipLoader size={64} />} 
         </Loader>
