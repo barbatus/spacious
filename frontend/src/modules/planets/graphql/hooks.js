@@ -30,3 +30,29 @@ export const usePlanet = (planetId) => {
     error,
   };
 };
+
+export const useAddPlanet = () => {
+  const [mutate, { loading }] = useMutation(CreatePlanet, {
+    update(cache, { data: { createPlanet } }) {
+      cache.modify({
+        fields: {
+          planets({ nodes, pagination }, { toReference }) {
+            return {
+              pagination: {
+                ...pagination,
+                total: pagination.total + 1,
+              },
+              nodes: [toReference(createPlanet), ...nodes],
+            };
+          }
+        },
+      });
+    },
+  });
+
+  const addPlanet = (newPlanet) => {
+    return mutate({ variables: { input: newPlanet } });
+  };
+
+  return { addPlanet, loading };
+};

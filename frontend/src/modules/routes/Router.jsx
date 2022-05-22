@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import { Planets, Planet } from '../planets';
+import { Planets, Planet, CreatePlanet } from '../planets';
 
 import { Layout } from './Layout';
 
@@ -18,6 +18,7 @@ export const Router = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="planets" />} />
         <Route path="planets" element={<Planets />}>
+          <Route path="create" exact element={<CreatePlanet />} />
           <Route path=":planetId" exact element={<Planet />} />
         </Route>
       </Route>
