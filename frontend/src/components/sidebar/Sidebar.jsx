@@ -25,7 +25,13 @@ const Description = styled.p`
 `;
 
 const Section = styled.section`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 24px;
+  ${({scrollable}) => scrollable && `
+    flex-grow: 1;
+    height: 0;
+  `};
 `;
 
 const SectionTitle = styled.div`
@@ -63,6 +69,7 @@ const ItemTitle = styled.h4`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 `;
 
 const ActionIcon = styled(Icon)`
@@ -78,6 +85,7 @@ export const Sidebar = React.memo(({
     emptyMsg,
     loading,
     onClose,
+    onListAdd,
   }) => {
   if (loading) {
     return (
@@ -107,10 +115,10 @@ export const Sidebar = React.memo(({
         <Description>{description}</Description>
         {Info}
       </Section>
-      <Section>
+      <Section scrollable>
         <SectionTitle>
           <span>{listName}</span>
-          <ActionIcon name="add" />
+          {onListAdd && <ActionIcon name="add" onClick={onListAdd} />}
         </SectionTitle>
         <ListContainer>
           {!items.length && emptyMsg}

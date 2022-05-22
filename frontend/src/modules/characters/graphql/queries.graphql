@@ -30,3 +30,22 @@ query GetCharacter($characterId: Int!) {
     }
   }
 }
+
+mutation CreateCharacter($input: CharacterInput!) {
+  createCharacter(character: $input) {
+    id
+    name
+    pictureUrl
+    friendsCount
+    planet {
+      id
+      name
+    }
+    friends(limit: 10) {
+      id
+      name
+      description
+      pictureUrl
+    }
+  }
+}

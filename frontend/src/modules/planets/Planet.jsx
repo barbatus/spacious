@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import { Sidebar } from '~/components/sidebar/Sidebar';
 
@@ -10,6 +10,7 @@ export const Planet = React.memo(() => {
   const { planet, loading } = usePlanet(parseInt(params.planetId, 10));
   const navigate = useNavigate();
   const onClose = React.useCallback(() => navigate('..'), [navigate]);
+  const onAddCharacter = React.useCallback(() => navigate('character'), [navigate]);
 
   if (loading) return <Sidebar loading />;
 
@@ -21,12 +22,16 @@ export const Planet = React.memo(() => {
   }));
 
   return (
-    <Sidebar
-      { ...planet }
-      listName="Characters"
-      listData={characters}
-      onClose={onClose}
-    >
-    </Sidebar>
+    <React.Fragment>
+      <Sidebar
+        { ...planet }
+        listName="Characters"
+        listData={characters}
+        onListAdd={onAddCharacter}
+        onClose={onClose}
+      >
+      </Sidebar>
+      <Outlet context={{ planet: planet.code }} />
+    </React.Fragment>
   );
 });

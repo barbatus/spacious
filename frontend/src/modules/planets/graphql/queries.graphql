@@ -18,6 +18,7 @@ query GetPlanet($planetId: Int!) {
     name
     description
     population
+    code
     characters(limit: 3) {
       id
       name

@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 
-import { GetCharacters, GetCharacter } from './queries.graphql';
+import { GetCharacters, GetCharacter, CreateCharacter } from './queries.graphql';
 
 export const useCharacters = (page = 1) => {
   const { data, loading, error } = useQuery(GetCharacters, {
@@ -29,4 +29,25 @@ export const useCharacter = (characterId) => {
     loading,
     error,
   };
+};
+
+export const useAddCharacter = () => {
+  const [mutate, { loading }] = useMutation(CreateCharacter, {
+    update(cache, { data: { createCharacter } }) {
+      cache.modify({
+        id: cache.identify(createCharacter.planet),
+        fields: {
+          characters(characters, { toReference }) {
+            return [toReference(createCharacter), ...characters];
+          }
+        },
+      });
+    },
+  });
+
+  const addCharacter = (newCharacter) => {
+    return mutate({ variables: { input: newCharacter } });
+  };
+
+  return { addCharacter, loading };
 };
