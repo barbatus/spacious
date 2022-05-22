@@ -1,2 +1,2 @@
-CREATE DATABASE strapi;
-CREATE DATABASE strapi_prod;
+CREATE DATABASE spacious;
+CREATE DATABASE spacious_prod;

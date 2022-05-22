@@ -1,6 +1,6 @@
-FROM postgres:12.2-alpine
+FROM postgres:14.1-alpine
 
 ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=^strapi123%$
+ENV POSTGRES_PASSWORD=^admin123%
 
 ADD create.sql /docker-entrypoint-initdb.d

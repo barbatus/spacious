@@ -6,13 +6,16 @@
   "main": "./dist/server.js",
   "scripts": {
     "start:dev": "nodemon ./server.js --exec babel-node",
-    "start": "node ./dist/server.js",
-    "db:init": "docker build -t strapi-postgres ./db/",
-    "db:start": "docker start strapi-postgres",
-    "db:run": "docker run -d --name strapi-postgres -p 5432:5432 strapi-postgres",
-    "db": "npm run db:start || npm run db:run || (npm run db:init && npm run db:run)",
+    "start": "nodemon ./dist/server.js",
+    "db:init": "docker build -t spacious-postgres ./db/",
+    "db:start": "docker start spacious-postgres",
+    "db:run": "docker run -d --name spacious-postgres -p 5432:5432 spacious-postgres",
+    "db:dev": "npm run db:start || npm run db:run || (npm run db:init && npm run db:run)",
     "db:migrate:dev": "knex migrate:latest --env development",
-    "db:seeds:dev": "knex seed:run --env development"
+    "db:seed:dev": "knex seed:run --env development",
+    "db:migrate": "knex migrate:latest --env production",
+    "db:seed": "knex seed:run --env production",
+    "build": "babel knexfile.js server.js -d dist && babel db -d dist/db && babel api -d dist/api"
   },
   "keywords": [],
   "author": "alex.borodach@gmail.com",
@@ -24,6 +27,7 @@
     "pg": "^8.7.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.10",
     "@babel/core": "^7.17.12",
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.17.12",

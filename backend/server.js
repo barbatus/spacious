@@ -26,6 +26,8 @@ async function startApolloServer() {
 
   httpServer.on('request', app.callback());
 
+  console.log('started');
+
   await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
 }
 

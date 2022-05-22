@@ -6,9 +6,9 @@ module.exports = {
     client: 'pg',
     connection: {
       host: 'localhost',
-      database: 'strapi',
+      database: 'spacious',
       user: 'postgres',
-      password: '^strapi123%$',
+      password: '^admin123%',
     },
     pool: {
       min: 2,
@@ -23,7 +23,7 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: process.env.PG_CONNECTION_URL,
+    connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
       max: 10
