@@ -83,7 +83,7 @@ const CreateForm = React.memo(({errors, values, submitted, submitError, showCode
       <FormRow label="Description" error={submitted && errors.description}>
         <Input name="description" value={values.description} onChange={handleChange} />
       </FormRow>
-      <FormRow>
+      <FormRow label="Friends">
         <FriendSelect onSelect={(value) => setFieldValue('friends', value)} />
       </FormRow>
     </Form>

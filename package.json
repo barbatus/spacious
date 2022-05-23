@@ -5,7 +5,7 @@
   "scripts": {
     "server": "cd backend && docker-compose up -d && docker-compose exec server npm run db:migrate && docker-compose exec server npm run db:seed",
     "frontend": "cd frontend && npm ci && npm run build && npm run serve",
-    "start": "npm run server || npm run frontend"
+    "start": "npm run server && npm run frontend"
   },
   "author": "alex.borodach@gmail.com",
   "license": "ISC"

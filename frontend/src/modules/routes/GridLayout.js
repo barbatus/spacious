@@ -47,7 +47,7 @@ const FilterContainer = styled.div`
   top: -60px;
 `;
 
-export const GridLayout = React.memo(({ items, filterName, Filter, error, loading, loaded }) => {
+export const GridLayout = React.memo(({ items = [], basePath, filterName, Filter, error, loading, loaded }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const onAddCallback = React.useCallback(() => {
@@ -68,7 +68,9 @@ export const GridLayout = React.memo(({ items, filterName, Filter, error, loadin
         nodeRef={itemRef}
       >
         <AnimatedTile
+          to={`${basePath}/${item.id}`}
           {...item}
+          data-testid={item.id}
           key={item.id}
           ref={itemRef}
         />
@@ -85,10 +87,12 @@ export const GridLayout = React.memo(({ items, filterName, Filter, error, loadin
         <Grid key={filterName} enter={loaded}>
           {gridItems}
         </Grid>
-        <AddButton onClick={onAddCallback} />
-        <Centered>
-          {loading && <ClipLoader size={64} />} 
-        </Centered>
+        <AddButton data-testid="add-item" onClick={onAddCallback} />
+        {loading &&
+          <Centered data-testid="loader">
+            <ClipLoader size={64} />} 
+          </Centered>
+        }
       </GridContainer>
       <SidebarContainer>
         <Outlet />

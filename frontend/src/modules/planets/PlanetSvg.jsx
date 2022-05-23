@@ -3,6 +3,8 @@ import styled from 'styled-components/macro';
 
 const StyledImg = styled.img`
   height: 120px;
+
+  ${({src}) => !src && 'visibility: hidden;'}
 `;
 
 export const PlanetSvg = ({ id = 1 }) => {
