@@ -17,7 +17,10 @@ const validationSchema = Yup.object().shape({
   planet: Yup.string()
     .required('Planet code is required')
     .matches(/[a-z]{2}-[a-z]{3}-[0-9]{2}/i, 'Code is in format e.g. XT-FOE-43'),
+  pictureUrl: Yup.string()
+    .required('Image is required'),
   description: Yup.string()
+    .required('Description is required')
     .min(15, 'Min length is 15 or empty')
     .max(300, 'Max length is 300')
     .nullable(),

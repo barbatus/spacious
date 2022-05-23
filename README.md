@@ -4,4 +4,7 @@ In order to launch the app, please run:
 
 ### `npm start`
 
-Tested on Mac only. It requires to have Docker locally (docker-compose).
+It will build a container with backend server and database, apply DB migration and DB seeds.
+Then, it will build frontend and serve it at http://localhost:3000.
+
+Tested on Mac only. Requires to have Docker locally (docker-compose).
