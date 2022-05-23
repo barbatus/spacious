@@ -1,5 +1,5 @@
 import { Planet } from '../planet/planet.model';
-import { Character } from './character.model';
+import { Character, Friendship } from './character.model';
 
 import { ApolloError } from 'apollo-server-errors';
 
@@ -13,6 +13,7 @@ export const types = [`
     planet: String!
     pictureUrl: String
     description: String
+    friends: [Int]
   }
 `];
 
@@ -22,12 +23,13 @@ export const resolvers = {
     if (!planet) {
       throw new ApolloError(`There is no Planet with code ${character.planet}`, 'CUSTOM_ERROR');
     }
-    const res = await Character.insert({
+    const res = (await Character.insert({
       name: character.name,
       planet: character.planet,
       picture_url: character.pictureUrl,
       description: character.description || null,
-    }).returning('*');
-    return res[0];
+    }).returning('*'))[0];
+    await Friendship.addFriends(res.id, character.friends);
+    return res;
   },
 };

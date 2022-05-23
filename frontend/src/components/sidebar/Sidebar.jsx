@@ -76,6 +76,18 @@ const ActionIcon = styled(Icon)`
   cursor: pointer;
 `;
 
+const StyledImg = styled.img`
+  ${({failed}) => failed && 'visibility: hidden;'}
+`;
+
+const ItemImg = ({ src }) => {
+  const [failed, setFailed] = React.useState(!src);
+
+  const onFail = React.useCallback(() => setFailed(true), []);
+
+  return <StyledImg alt="Item Img" failed={failed} src={src} onError={onFail}></StyledImg>
+};
+
 export const Sidebar = React.memo(({
     name,
     description,
@@ -97,7 +109,7 @@ export const Sidebar = React.memo(({
 
   const items = listData.map(({ id, url, title, hint }) => (
     <ListItem key={id}>
-      <img alt="Item Img" src={url}></img>
+      <ItemImg alt="Item Img" src={url}></ItemImg>
       <div>
         <ItemTitle>{title}</ItemTitle>
         <Hint>{hint}</Hint>

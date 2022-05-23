@@ -1,14 +1,45 @@
 import React from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
+import styled from 'styled-components/macro';
 
 import * as Yup from 'yup';
 
 import { Formik, FormRow, Input, useFormCallback, Form } from '~/components/form';
 import { Modal } from '~/components/modal';
+import { Dropdown } from '~/components/dropdown/Dropdown';
 
 import { parseError } from '~/lib/graphql';
 
-import { useAddCharacter } from './graphql/hooks';
+import { useAddCharacter, useCharacters } from './graphql/hooks';
+
+const StyledDropdown = styled(Dropdown)`
+  width: 100%;
+  background-color: #F5F5F5;
+`;
+
+const FriendSelect = React.memo(({ value, onSelect }) => {
+  const { characters } = useCharacters();
+
+  const onChange = React.useCallback((options) => {
+    onSelect(options.map(option => parseInt(option.value)));
+  }, [onSelect]);
+  
+  const options = characters.map((character) => ({
+      label: character.name,
+      value: character.id,
+    })
+  );
+
+  return (
+    <StyledDropdown
+      isMulti
+      classNamePrefix="react-select"
+      options={options}
+      onChange={onChange}
+    >
+    </StyledDropdown>
+  );
+});
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,7 +57,7 @@ const validationSchema = Yup.object().shape({
     .nullable(),
 });
 
-const CreateForm = React.memo(({errors, values, submitted, submitError, showCode, handleChange}) => {
+const CreateForm = React.memo(({errors, values, submitted, submitError, showCode, setFieldValue, handleChange}) => {
   return (
     <Form error={submitError}>
       <FormRow label="Name" error={submitted && errors.name}>
@@ -51,6 +82,9 @@ const CreateForm = React.memo(({errors, values, submitted, submitError, showCode
       </FormRow>
       <FormRow label="Description" error={submitted && errors.description}>
         <Input name="description" value={values.description} onChange={handleChange} />
+      </FormRow>
+      <FormRow>
+        <FriendSelect onSelect={(value) => setFieldValue('friends', value)} />
       </FormRow>
     </Form>
   );

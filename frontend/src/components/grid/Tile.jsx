@@ -24,6 +24,8 @@ const StyledImg = styled.img`
   object-fit: cover;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+
+  ${({failed}) => failed && 'visibility: hidden;'}
 `;
 
 const TileName = styled.h4`
@@ -59,7 +61,7 @@ const TileImg = React.memo(({ fallback, src, ...props }) => {
 
   if (failed && fallback) return fallback;
 
-  return <StyledImg src={src} {...props} onError={onFail} />;
+  return <StyledImg src={src} failed={failed} {...props} onError={onFail} />;
 });
 
 export const Tile = React.memo(

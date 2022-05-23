@@ -1,5 +1,20 @@
 import { Model } from '../model';
 
+export class Friendship extends Model {
+  constructor() {
+    super('friendship');
+  }
+
+  static query() {
+    return new Friendship().builder;
+  }
+
+  static addFriends(id, friedIds) {
+    const data = friedIds.map(friend_id => ({ character_id: id, friend_id }));
+    return this.insert(data);
+  }
+}
+
 export class Character extends Model {
   constructor() {
     super('characters');
