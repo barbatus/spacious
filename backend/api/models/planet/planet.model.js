@@ -1,5 +1,7 @@
 import knex from 'knex';
+
 import { Model } from '../model';
+import { Character } from '../character/character.model';
 
 export class Planet extends Model {
   constructor() {
@@ -10,21 +12,26 @@ export class Planet extends Model {
     return new Planet().builder;
   }
 
-  static selectPage(page, pageSize) {
-    return this
+  static async selectPage(page, pageSize) {
+    const result = await this
       .select('planets.*')
       .leftJoin('characters', 'planets.code', '=', 'characters.planet')
       .count('characters.id as population')
       .groupBy('planets.id')
       .offset(pageSize*(page - 1))
       .limit(pageSize);
+    this.save(result);
+    return result;
   }
 
-  static findCharacters(planet) {
-    return this
+  static async findCharacters(planet, limit) {
+    const result = await this
       .join('characters', 'planets.code', '=', 'characters.planet')
       .where('planets.code', planet)
-      .select('characters.*');
+      .select('characters.*')
+      .limit(limit);
+      Character.save(result);
+    return result;
   }
 
   static findByCode(code) {

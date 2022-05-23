@@ -8,7 +8,7 @@ export const queries = [`
 
 export const resolvers = {
   async planet(_, { id }) {
-    return await Planet.findById(id);
+    return Planet.loader().load(id);
   },
   async planets(_, { page = 1, pageSize = 10 }) {
     page = Math.max(page, 1);

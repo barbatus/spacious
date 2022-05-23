@@ -8,7 +8,7 @@ export const queries = [`
 
 export const resolvers = {
   async character(_, { id }) {
-    return await Character.findById(id);
+    return Character.loader().load(id);
   },
 
   async characters(_, { page = 1, pageSize = 10, planet }) {

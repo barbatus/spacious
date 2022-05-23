@@ -33,7 +33,7 @@ export const resolvers = {
       const res = await Character.countFriends(root.id);
       return parseInt(res.count, 10);
     },
-    friends: (root, { limit }) => Character.findFriends(root.id).limit(limit),
+    friends: (root, { limit }) => Character.findFriends(root.id, limit),
     planet: (root) => Planet.findByCharacter(root.id),
   },
 };

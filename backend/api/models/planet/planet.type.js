@@ -33,6 +33,6 @@ export const resolvers = {
       return res.length;
     },
     pictureUrl: (root) => root.picture_url,
-    characters: (root, { limit }) => Planet.findCharacters(root.code).limit(limit),
+    characters: (root, { limit }) => Planet.findCharacters(root.code, limit),
   }
 };

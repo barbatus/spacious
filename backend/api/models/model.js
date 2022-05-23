@@ -1,4 +1,8 @@
+import DataLoader from 'dataloader';
+
 import dbClient from '../../db/client';
+
+const loaders = {};
 
 export class Model {
   constructor(tableName) {
@@ -12,8 +16,16 @@ export class Model {
     return Math.max(res.rows[0].estimate, 0);
   }
 
-  static findById(id) {
-    return this.query().where('id', id).first();
+  static loader() {
+    const query = this.query();
+    if (!loaders[query.table]) {
+      loaders[query.table] = new DataLoader((ids) => this.findByIds(ids));
+    }
+    return loaders[query.table];
+  }
+
+  static findByIds(ids) {
+    return this.query().whereIn('id', ids);
   }
 
   static where(...args) {
@@ -34,5 +46,11 @@ export class Model {
 
   static exec(...args) {
     return dbClient.raw(...args);
+  }
+
+  static save(items) {
+    items.forEach((item) => {
+      this.loader().clear(item.id).prime(item.id, item);
+    });
   }
 }

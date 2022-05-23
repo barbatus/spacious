@@ -9,16 +9,18 @@ export class Character extends Model {
     return new Character().builder;
   }
 
-  static selectPage(planetCode, page, pageSize) {
+  static async selectPage(planetCode, page, pageSize) {
     const query = planetCode ?
       this.select('characters.*').where('planet', planetCode) :
       this.select('characters.*');
-    return query
+    const result = await query
       .leftJoin('friendship', 'characters.id', '=', 'friendship.character_id')
       .count('friendship.character_id as friendsCount')
       .groupBy('characters.id')
       .offset(pageSize*(page - 1))
       .limit(pageSize);
+    this.save(result);
+    return result;
   }
 
   static countFriends(id) {
@@ -30,10 +32,13 @@ export class Character extends Model {
       .first()
   }
 
-  static findFriends(id) {
-    return this
+  static async findFriends(id, limit) {
+    const result = await this
       .join('friendship', 'characters.id', '=', 'friendship.friend_id')
       .where('friendship.character_id', id)
-      .select('characters.*');
+      .select('characters.*')
+      .limit(limit);
+    this.save(result);
+    return result;
   }
 }
