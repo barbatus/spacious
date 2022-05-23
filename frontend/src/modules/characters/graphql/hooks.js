@@ -4,9 +4,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GetCharacters, GetCharacter, CreateCharacter } from './queries.graphql';
 
 export const useCharacters = (page = 1) => {
+  const [planet, setPlanet] = React.useState(null);
   const [loaded, setLoaded] = React.useState(false);
   const { data, loading, error } = useQuery(GetCharacters, {
     variables: {
+      planet,
       page,
       pageSize: 10,
     },
@@ -16,7 +18,14 @@ export const useCharacters = (page = 1) => {
     setTimeout(() => setLoaded(true));
   };
 
+  const filterCharacter = React.useCallback((filter) => {
+    setLoaded(false);
+    setPlanet(filter);
+  }, []);
+
   return {
+    planet,
+    filterCharacter,
     characters: data ? data.characters.nodes : [], 
     loading,
     loaded,

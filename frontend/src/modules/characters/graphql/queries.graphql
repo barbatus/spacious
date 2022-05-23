@@ -1,5 +1,5 @@
-query GetCharacters($page: Int, $pageSize: Int) {
-  characters(page: $page, pageSize: $pageSize) {
+query GetCharacters($planet: String, $page: Int, $pageSize: Int) {
+  characters(planet: $planet, page: $page, pageSize: $pageSize) {
     pagination {
       total
     }

@@ -9,7 +9,7 @@ export class Model {
   static async fastTotal() {
     const query = this.query();
     const res = await this.exec(`SELECT reltuples AS estimate FROM pg_class where relname = '${query.table}'`);
-    return res.rows[0].estimate;
+    return Math.max(res.rows[0].estimate, 0);
   }
 
   static findById(id) {

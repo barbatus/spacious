@@ -39,7 +39,6 @@ const Container = styled(NavLink)`
   border-radius: 16px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 
-  color: #121C33;
   text-decoration: none;
   border: 2px solid transparent;
 

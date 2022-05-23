@@ -8,9 +8,10 @@ const Container = styled.div`
 `;
 
 const Tab = styled(NavLink)`
-  display: inline-block;
-  color: #121C33;
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  color: #121c33;
   font-weight: 600;
   opacity: 0.6;
   padding: 8px;
@@ -18,13 +19,12 @@ const Tab = styled(NavLink)`
   cursor: pointer;
   text-decoration: none;
   border-radius: 8px;
-  margin-bottom: 16px;
   margin-right: 16px;
 
   &.active {
     opacity: 1;
     padding: 8px 24px;
-    background-color: rgba(18, 28, 51, 0.05);
+    background-color: #EAEAEB;
   }
 `;
 

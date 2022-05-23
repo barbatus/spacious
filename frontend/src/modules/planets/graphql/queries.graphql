@@ -8,6 +8,7 @@ query GetPlanets($page: Int, $pageSize: Int) {
       name
       pictureUrl
       population
+      code
     }
   }
 }
@@ -34,5 +35,6 @@ mutation CreatePlanet($input: PlanetInput!) {
     name
     pictureUrl
     population
+    code
   }
 }

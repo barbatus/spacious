@@ -9,7 +9,7 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   padding: 32px;
-  grid-template-rows: 132px calc(100% - 132px);
+  grid-template-rows: 140px calc(100% - 140px);
   grid-template-columns: 3fr max-content;
 `;
 

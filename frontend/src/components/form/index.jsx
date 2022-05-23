@@ -15,7 +15,6 @@ const Row = styled.div`
 `;
 
 const Label = styled.label`
-  color: #121C33;
   display: block;
   user-select: none;
   margin-bottom: 8px;
@@ -30,7 +29,7 @@ export const Input = styled(({ value = '', ...props}) => <input value={value} {.
   width: 100%;
   border-radius: 8px;
   padding: 8px 16px;
-  background-color: #f5f5f5;
+  background-color: #F5F5F5;
   height: 40px;
   border: 0;
 

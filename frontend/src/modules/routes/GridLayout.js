@@ -41,7 +41,13 @@ const AnimatedTile = styled(Tile)`
   }
 `;
 
-export const GridLayout = React.memo(({ items, error, loading, loaded }) => {
+const FilterContainer = styled.div`
+  position: absolute;
+  right: 120px;
+  top: -60px;
+`;
+
+export const GridLayout = React.memo(({ items, filterName, Filter, error, loading, loaded }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const onAddCallback = React.useCallback(() => {
@@ -73,7 +79,10 @@ export const GridLayout = React.memo(({ items, error, loading, loaded }) => {
   return (
     <React.Fragment>
       <GridContainer>
-        <Grid enter={loaded}>
+        <FilterContainer>
+          {Filter}
+        </FilterContainer>
+        <Grid key={filterName} enter={loaded}>
           {gridItems}
         </Grid>
         <AddButton onClick={onAddCallback} />
