@@ -4,7 +4,7 @@ import { TransitionGroup } from 'react-transition-group';
 
 export const Grid = styled(TransitionGroup)`
   display: grid;
-  grid-gap: 15px;
+  grid-gap: 16px;
   grid-template-columns: repeat(auto-fit, 276px);
   grid-template-rows: max-content;
   grid-column: 1;

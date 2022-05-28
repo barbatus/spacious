@@ -15,7 +15,7 @@
     "db:seed:dev": "knex seed:run --env development",
     "db:migrate": "knex migrate:latest --env production",
     "db:seed": "knex seed:run --env production",
-    "build": "babel knexfile.js server.js -d dist && babel db -d dist/db && babel api -d dist/api"
+    "build": "babel *.js -d dist && babel db -d dist/db && babel api -d dist/api"
   },
   "keywords": [],
   "author": "alex.borodach@gmail.com",
