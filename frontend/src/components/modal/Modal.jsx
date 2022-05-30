@@ -37,6 +37,7 @@ export const Modal = ({
   const submitMsg = buttonMsgs ? buttonMsgs[1] : 'Submit';
   return (
     <StyledModal
+      role="modal"
       aria-labelledby="modal"
       onDismiss={onDismiss}
     >
@@ -47,8 +48,8 @@ export const Modal = ({
         <h1>{title}</h1>
         {children}
         <Footer>
-          <Button onClick={onDismiss}>{cancelMsg}</Button>
-          <Button primary onClick={onSubmit}>{submitMsg}</Button>
+          <Button role="cancel"  onClick={onDismiss}>{cancelMsg}</Button>
+          <Button role="submit" primary onClick={onSubmit}>{submitMsg}</Button>
         </Footer>
       </React.Fragment>
     </StyledModal>

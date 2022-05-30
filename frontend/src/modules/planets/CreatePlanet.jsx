@@ -80,10 +80,11 @@ export const CreatePlanet = () => {
         validationSchema={validationSchema}
         enableReinitialize
         submitForm={submitForm}
-        render={props => <CreateForm {...props} submitError={submitError} />}
         onSubmit={onSubmit}
         validateOnBlur
-      />
+      >
+      {props => <CreateForm {...props} submitError={submitError} />}
+      </Formik>
     </Modal>
   );
 };

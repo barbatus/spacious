@@ -25,7 +25,9 @@ const ErrorMsg = styled.div`
   color: #AB192F;
 `;
 
-export const Input = styled(({ value = '', ...props}) => <input value={value} {...props} />)`
+export const Input = styled(({ value = '', ...props}) =>
+    <input {...props} value={value} aria-label={props.name} />
+  )`
   width: 100%;
   border-radius: 8px;
   padding: 8px 16px;

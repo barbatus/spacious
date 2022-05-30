@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -15,7 +16,7 @@ test('renders error if error prop is passed', () => {
   expect(errorComp).toBeInTheDocument();
 });
 
-test('renders error if error prop is passed', () => {
+test('renders loader if loading prop is passed', () => {
   render(<BrowserRouter><GridLayout loading /></BrowserRouter>);
   const loader = screen.getByTestId('loader');
   expect(loader).toBeInTheDocument();
@@ -31,7 +32,6 @@ test('renders items', () => {
     </BrowserRouter>
   );
   const item = screen.getByTestId('1');
-  console.log(item.href);
   expect(item).toBeInTheDocument();
 });
 
@@ -47,4 +47,3 @@ test('renders items as links', () => {
   const item = screen.getByTestId('1');
   expect(item.href).toContain('planets/1');
 });
-

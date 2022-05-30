@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { Formik as FormikBase } from 'formik';
 
 export const useFormCallback = () => {
@@ -23,9 +23,8 @@ export const useFormCallback = () => {
 export const Formik = React.memo(
   ({
     initialValues,
-    isInitialValid = false,
     enableReinitialize = false,
-    render,
+    children,
     submitForm,
     onSubmit,
     ...rest
@@ -34,17 +33,19 @@ export const Formik = React.memo(
       <FormikBase
         {...rest}
         initialValues={initialValues}
-        isInitialValid={isInitialValid}
         enableReinitialize={enableReinitialize}
         onSubmit={onSubmit}
-        render={props => {
+      >
+      {
+        props => {
           if (submitForm) {
             submitForm(props.submitForm);
           }
           props.submitted = props.submitCount > 0;
-          return render(props);
-        }}
-      />
+          return children(props);
+        }
+      }
+      </FormikBase>
     );
   }
 );
