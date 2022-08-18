@@ -10,3 +10,5 @@ Then, it will build frontend and serve it at http://localhost:3000.
 Rerun server specifically `npm run server`.
 
 Tested on Mac only. Requires to have Docker locally (docker-compose).
+
+![Uploading spacious.jpg…]()
