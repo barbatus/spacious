@@ -11,6 +11,10 @@ import { typeDefs, resolvers } from './api/schema';
 
 const PORT = process.env.PORT || 8000;
 
+export const app = new Koa();
+app.use(cors());
+app.use(authMiddleware.unless({ path: [/^\/public/] }));
+
 async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
@@ -22,9 +26,6 @@ async function startApolloServer() {
 
   await server.start();
 
-  const app = new Koa();
-  app.use(cors());
-  app.use(authMiddleware.unless({ path: [/^\/public/] }));
   server.applyMiddleware({ app });
 
   const httpServer = createServer(app);
