@@ -11,4 +11,4 @@ Rerun server specifically `npm run server`.
 
 Tested on Mac only. Requires to have Docker locally (docker-compose).
 
-![Uploading spacious.jpg…]()
+![spacious](https://user-images.githubusercontent.com/2824096/185373952-3d25c6f6-84d0-41e7-8014-449b0aa3efd1.jpg)
